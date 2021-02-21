@@ -1,11 +1,12 @@
 import React from "react";
-import "./App.css";
+import { InfoBox } from "./infoBox";
+import "./App.scss";
 
 export class App extends React.Component {
   render() {
     return (
-      <div>
-        <h1>hello guys</h1>
+      <div className="wrapper">
+        <InfoBox />
       </div>
     );
   }
