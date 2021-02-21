@@ -1,4 +1,5 @@
 import React from "react";
+import { Slide } from "./Slide";
 import "./infoBox.scss";
 
 const red = [
@@ -45,21 +46,23 @@ const api = "https://boring-fe.herokuapp.com/";
 export class InfoBox extends React.Component {
   state = {
     activeIndex: 0,
+    slides: [],
   };
 
+  async componentDidMount() {
+    const response = await fetch(
+      "https://boring-fe.herokuapp.com/advertisments"
+    );
+    const slides = await response.json();
+    this.setState({ slides });
+  }
+
   renderSlide() {
-    return red.map((slide, i) => {
+    return this.state.slides.map((slide, i) => {
       const isActive = this.state.activeIndex === i;
-      return (
-        <div
-          key={slide.id}
-          className={"slide " + `${isActive ? "active" : ""}`}
-        >
-          <img className="slide_img" src={api + slide.img} alt="" />
-          <h3>{slide.title}</h3>
-          <p>{slide.description}</p>
-        </div>
-      );
+      const key = slide.id;
+
+      return <Slide {...{ key, isActive, ...slide }} />;
     });
   }
 
@@ -68,14 +71,14 @@ export class InfoBox extends React.Component {
       activeIndex:
         this.state.activeIndex >= 1
           ? this.state.activeIndex - 1
-          : red.length - 1,
+          : this.state.slides.length - 1,
     });
   }
 
   incIndex() {
     this.setState({
       activeIndex:
-        this.state.activeIndex + 1 < red.length
+        this.state.activeIndex + 1 < this.state.slides.length
           ? this.state.activeIndex + 1
           : 0,
     });
