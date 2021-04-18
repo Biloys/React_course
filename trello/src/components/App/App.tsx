@@ -117,7 +117,7 @@ class App extends React.Component<AppProps, AppState> {
 
   private renderRoute = (route: AppRoute, i: number) => {
     if (route.isProtected) {
-      return <ProtectedRoute {...route} isAuth={this.isLoggedIn} />;
+      return <ProtectedRoute {...route} key={i} isAuth={this.isLoggedIn} />;
     } else {
       return (
         <Route
