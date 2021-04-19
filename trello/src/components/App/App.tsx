@@ -51,12 +51,15 @@ class App extends React.Component<AppProps, AppState> {
       return this.navigationToLogin;
     }
 
-    const url = `https://api.trello.com/1/members/me/?key=${REACT_APP_API_KEY}&token=${token}`;
+    const url = `https://api.trello.com/1/members/me/boards?key=${REACT_APP_API_KEY}&token=${token}`;
 
     const response = await fetch(url);
 
     if (response.status === 200 && response.ok === true) {
       const userProfile = response.json();
+      console.log("from get token");
+      console.log(userProfile);
+
       this.setProfile(userProfile);
       this.setToken(token);
       return this.navigationToDashboard();
@@ -66,6 +69,9 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   private setProfile(userProfile: any) {
+    console.log("from set profile");
+    console.log(userProfile);
+
     this.setState({ userProfile });
   }
 
@@ -86,10 +92,6 @@ class App extends React.Component<AppProps, AppState> {
 
   private get isLoggedIn() {
     return !!this.state.token;
-  }
-
-  private renderHeader() {
-    return <Header logOut={this.logOut} />;
   }
 
   private logOut = () => {
@@ -133,7 +135,7 @@ class App extends React.Component<AppProps, AppState> {
   public render() {
     return (
       <div>
-        {this.renderHeader()}
+        <Header logOut={this.logOut} />
         {this.renderContent()}
       </div>
     );

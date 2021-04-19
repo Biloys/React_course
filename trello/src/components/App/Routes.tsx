@@ -20,7 +20,6 @@ export interface AppRoute {
   isHidden?: boolean;
   exact?: boolean;
   isProtected?: boolean;
-  id?: number;
 }
 
 export const routes: Array<AppRoute> = [
