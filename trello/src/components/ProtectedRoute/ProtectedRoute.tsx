@@ -1,17 +1,19 @@
 import React, { FunctionComponent } from "react";
+import { connect } from "react-redux";
 import {
   Route,
   Redirect,
   RouteProps,
   RouteComponentProps,
 } from "react-router-dom";
+import { AppState, isAuthenticated } from "../../store";
 import { ROUTES_URLS } from "../App/Routes";
 
 interface ProtectedRouteProps extends RouteProps {
-  isAuth: boolean;
+  isAuth?: boolean;
 }
 
-export const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = ({
+const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = ({
   render,
   isAuth,
   ...rest
@@ -34,3 +36,13 @@ export const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = ({
     />
   );
 };
+
+const mapStateToProps = (state: AppState) => {
+  return {
+    isAuth: isAuthenticated(state),
+  };
+};
+
+const ConnectedRoute = connect(mapStateToProps)(ProtectedRoute);
+
+export { ConnectedRoute as ProtectedRoute };

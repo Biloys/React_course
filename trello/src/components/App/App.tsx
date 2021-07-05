@@ -39,66 +39,8 @@ class App extends React.Component<AppProps, AppState> {
   public state = INITIAL_STATE;
 
   componentDidMount() {
-    this.getToken();
+
   }
-
-  private async getToken() {
-    if (this.state.token) {
-      return;
-    }
-    const { token } = getFromLocalStorages<CustomToken>(TOKEN_STORAGE_KEY);
-    if (!token) {
-      return this.navigationToLogin;
-    }
-
-    const url = `https://api.trello.com/1/members/me/boards?key=${REACT_APP_API_KEY}&token=${token}`;
-
-    const response = await fetch(url);
-
-    if (response.status === 200 && response.ok === true) {
-      const userProfile = response.json();
-      console.log("from get token");
-      console.log(userProfile);
-
-      this.setProfile(userProfile);
-      this.setToken(token);
-      return this.navigationToDashboard();
-    }
-
-    return this.navigationToLogin;
-  }
-
-  private setProfile(userProfile: any) {
-    console.log("from set profile");
-    console.log(userProfile);
-
-    this.setState({ userProfile });
-  }
-
-  private navigationToDashboard() {
-    this.props.history.push(ROUTES_URLS.DASHBOARD);
-  }
-
-  private navigationToLogin() {
-    this.props.history.push(ROUTES_URLS.LOGIN);
-  }
-
-  private setToken = (token: any) => {
-    this.setState({ token });
-    setToLocalStorages<CustomToken>(TOKEN_STORAGE_KEY, {
-      token,
-    });
-  };
-
-  private get isLoggedIn() {
-    return !!this.state.token;
-  }
-
-  private logOut = () => {
-    this.setState(INITIAL_STATE);
-    this.navigationToLogin();
-    setToLocalStorages<CustomToken>(TOKEN_STORAGE_KEY, { emptyToken });
-  };
 
   private renderContent() {
     return (
@@ -107,9 +49,7 @@ class App extends React.Component<AppProps, AppState> {
           {routes.map(this.renderRoute)}
           <Route
             path={ROUTES_URLS.OAUTH}
-            render={(props: RouteChildrenProps) => (
-              <OAuth {...props} onSetToken={this.setToken} />
-            )}
+            render={(props: RouteChildrenProps) => <OAuth {...props} />}
           />
           <Redirect to={ROUTES_URLS.NOT_FOUND} />
         </Switch>
@@ -119,7 +59,7 @@ class App extends React.Component<AppProps, AppState> {
 
   private renderRoute = (route: AppRoute, i: number) => {
     if (route.isProtected) {
-      return <ProtectedRoute {...route} key={i} isAuth={this.isLoggedIn} />;
+      return <ProtectedRoute {...route} key={i} />;
     } else {
       return (
         <Route
@@ -135,7 +75,7 @@ class App extends React.Component<AppProps, AppState> {
   public render() {
     return (
       <div>
-        <Header logOut={this.logOut} />
+        <Header logOut={() => console.log("log-out")} />
         {this.renderContent()}
       </div>
     );
