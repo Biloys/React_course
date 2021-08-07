@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
-import { setToLocalStorages, getFromLocalStorages } from "../utils";
+import { setToLocalStorages, getFromLocalStorages } from "../../utils";
 import { RouteChildrenProps, RouteComponentProps } from "react-router";
 import { OAuth } from "../OAuth";
 import { ProtectedRoute } from "../ProtectedRoute";
@@ -9,6 +9,8 @@ import { AppRoute, routes, ROUTES_URLS } from "./Routes";
 import { Header } from "../Header";
 
 import styles from "./app.module.scss";
+import { init } from "../../store/initialization";
+import { connect } from "react-redux";
 
 const TOKEN_STORAGE_KEY = "TOKEN";
 const { REACT_APP_API_KEY } = process.env;
@@ -33,13 +35,14 @@ interface CustomToken {
 const INITIAL_STATE = { token: "", userProfile: undefined, boards: [] };
 const emptyToken = "";
 
-interface AppProps extends RouteComponentProps {}
+interface AppProps extends RouteComponentProps {
+  onInit: () => void;
+}
 
 class App extends React.Component<AppProps, AppState> {
   public state = INITIAL_STATE;
-
-  componentDidMount() {
-
+  componentWillMount() {
+    this.props.onInit();
   }
 
   private renderContent() {
@@ -82,6 +85,12 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-const AppWithRouter = withRouter(App);
+const mapDispathToProps = (dispatch: any) => {
+  return {
+    onInit: () => dispatch(init()),
+  };
+};
+
+const AppWithRouter = withRouter(connect(undefined, mapDispathToProps)(App));
 
 export { AppWithRouter as App };
