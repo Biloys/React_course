@@ -7,27 +7,17 @@ import { request } from "../http";
 import { Action } from "../types";
 import { setToken } from "./actions";
 import { ACTION_TYPES } from "./types";
+import { push } from "connected-react-router";
+import { ROUTES_URLS } from "../../components/App";
+import { navigate } from "../router";
 
 const APP_TOKEN = "TREELLO_CUSTOM_APP_TOKEN";
 
-const authMiddleware =
-  ({ dispatch }: any) =>
-  (next: any) =>
-  (action: Action<ACTION_TYPES>) => {
-    if (action.type === ACTION_TYPES.SET_TOKEN) {
-      console.log("TOKEN SET!");
-      setToLocalStorages(APP_TOKEN, action.payload);
-      // dispatch(
-      //   request({
-      //     path: "https://jsonplaceholder.typicode.com/posts/",
-      //     onSuccess: (data) => {
-      //       console.log("SUCCESS get Data -> ", data);
-      //     },
-      //   })
-      // );
-    }
-    next(action);
-  };
+const setTokenWorker = ({ action, next, dispatch }: any) => {
+  setToLocalStorages(APP_TOKEN, action.payload);
+  dispatch(navigate(ROUTES_URLS.DASHBOARD));
+  next(action);
+};
 
 const readTokenWorker = ({ action, next, dispatch }: any) => {
   const token = getFromLocalStorages(APP_TOKEN);
@@ -41,4 +31,10 @@ const readTokenMiddleware =
   ({ dispatch }: any) =>
   (next: any) =>
     subscribe(ACTION_TYPES.READ_TOKEN, readTokenWorker)(next, dispatch);
-export const authMiddlewares = [authMiddleware, readTokenMiddleware];
+
+const setTokenMiddleware =
+  ({ dispatch }: any) =>
+  (next: any) =>
+    subscribe(ACTION_TYPES.SET_TOKEN, setTokenWorker)(next, dispatch);
+
+export const authMiddlewares = [setTokenMiddleware, readTokenMiddleware];

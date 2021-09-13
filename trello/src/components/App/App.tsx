@@ -27,23 +27,13 @@ interface AppState {
   userProfile: any;
 }
 
-interface CustomToken {
-  token?: string;
-  emptyToken?: string;
-}
-
 const INITIAL_STATE = { token: "", userProfile: undefined, boards: [] };
 const emptyToken = "";
 
-interface AppProps extends RouteComponentProps {
-  onInit: () => void;
-}
+interface AppProps {}
 
 class App extends React.Component<AppProps, AppState> {
   public state = INITIAL_STATE;
-  componentWillMount() {
-    this.props.onInit();
-  }
 
   private renderContent() {
     return (
@@ -85,12 +75,4 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-const mapDispathToProps = (dispatch: any) => {
-  return {
-    onInit: () => dispatch(init()),
-  };
-};
-
-const AppWithRouter = withRouter(connect(undefined, mapDispathToProps)(App));
-
-export { AppWithRouter as App };
+export { App };

@@ -2,12 +2,15 @@ import * as React from "react";
 import { RouteChildrenProps } from "react-router";
 import { connect } from "react-redux";
 import { increaseCount, decreaseCount, AppState, getCount } from "../../store";
+import { fetchBoards, getBoards } from "../../store/boards";
 
 interface DashboardProps extends RouteChildrenProps {
   token?: string;
   myCount?: number;
+  boards?: Array<any>;
   onIncrease?: () => void;
   onDecrease?: () => void;
+  onFetchBoards?: () => void;
 }
 
 class Dashboard extends React.Component<DashboardProps> {
@@ -21,13 +24,19 @@ class Dashboard extends React.Component<DashboardProps> {
   decrease = () => {
     this.props.onDecrease!();
   };
+  componentDidMount() {
+    this.props.onFetchBoards!();
+  }
   render() {
     return (
       <div>
-        <h2 onClick={this.goBack}>Some secret text</h2>
+        <h2 onClick={this.goBack}>Hello from dashboard</h2>
         <div>{this.props.myCount}</div>
         <button onClick={this.decrease}>-</button>
         <button onClick={this.increase}>+</button>
+        {this.props.boards!.map((item) => (
+          <div>{item.name}</div>
+        ))}
       </div>
     );
   }
@@ -36,6 +45,7 @@ class Dashboard extends React.Component<DashboardProps> {
 const mapStateToProps = (state: AppState) => {
   return {
     myCount: getCount(state),
+    boards: getBoards(state),
   };
 };
 
@@ -43,6 +53,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     onIncrease: () => dispatch(increaseCount()),
     onDecrease: () => dispatch(decreaseCount()),
+    onFetchBoards: () => dispatch(fetchBoards()),
   };
 };
 
