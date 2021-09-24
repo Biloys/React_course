@@ -3,21 +3,31 @@ import { request } from "../http";
 import { ACTIONS_TYPES } from "./types";
 import { setBoard } from "./actions";
 
-const fetchBoardsWorker = ({ action, next, dispatch }: any) => {
+const fetchBoardsWorker: any = ({
+  action,
+  next,
+  dispatch,
+}: {
+  action: any;
+  next: any;
+  dispatch: any;
+}) => {
   console.log("fetched");
-  dispatch(
-    request({
-      path: "/1/members/me/boards",
-      authRequired: true,
-      onSuccess: (data) => {
-        console.log(data);
-        dispatch(setBoard(data));
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    })
-  );
+
+  // dispatch(
+  //   request({
+  //     path: "/1/members/me/boards",
+  //     authRequired: true,
+  //     onSuccess: (data) => {
+  //       console.log(data);
+  //       dispatch(setBoard(data));
+  //     },
+  //     onError: (error) => {
+  //       console.log(error);
+  //     },
+  //   })
+  // );
+  next(action);
 };
 
 const fetchMiddleware =
