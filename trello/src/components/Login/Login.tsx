@@ -1,6 +1,9 @@
 import * as React from "react";
+import { Component } from "react";
+import { Counter } from "../Counter";
 import { Title } from "../Title";
 import styles from "./login.module.scss";
+
 const {
   REACT_APP_API_KEY,
   REACT_APP_APP_NAME,
@@ -18,7 +21,9 @@ interface LoginState {
   list: Array<string>;
   value: number;
 }
-export class Login extends React.Component<{}, LoginState> {
+interface LoginProps {}
+
+export class Login extends Component<LoginProps, LoginState> {
   state = {
     list: t,
     value: 0,
@@ -39,8 +44,14 @@ export class Login extends React.Component<{}, LoginState> {
     this.setState({ value: this.state.value + 1 });
   };
   doubleIncrement = () => {
-    this.setState({ value: this.state.value + 1 });
-    this.setState({ value: this.state.value + 1 });
+    this.setState((state: LoginState) => ({
+      ...state,
+      value: state.value + 1,
+    }));
+    this.setState((state: LoginState) => ({
+      ...state,
+      value: state.value + 1,
+    }));
   };
   render() {
     return (
@@ -54,6 +65,9 @@ export class Login extends React.Component<{}, LoginState> {
           <button onClick={this.increment}>+</button>
           <button onClick={this.doubleIncrement}>++</button>
           {this.state.value}
+        </div>
+        <div className="">
+          <Counter />
         </div>
         <div>
           <button onClick={this.asyncUpdate}>Add</button>
