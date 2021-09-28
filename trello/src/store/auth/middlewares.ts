@@ -10,8 +10,7 @@ import { ACTION_TYPES } from "./types";
 import { push } from "connected-react-router";
 import { ROUTES_URLS } from "../../components/App";
 import { navigate } from "../router";
-
-const APP_TOKEN = "TREELLO_CUSTOM_APP_TOKEN";
+import { APP_TOKEN } from "../../constants";
 
 const setTokenWorker = ({ action, next, dispatch }: any) => {
   setToLocalStorages(APP_TOKEN, action.payload);

@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
-import { MyCoolStore } from "../../observables/MyCoolStore";
+import React from "react";
+import { MyCoolStore } from "../../observableStores/MyCoolStore";
 
 interface Props {
   value?: MyCoolStore;
 }
 
-export class Counter extends PureComponent<Props> {
+export class Counter extends React.PureComponent<Props> {
   render() {
     return <h2>{this.props.value}</h2>;
   }

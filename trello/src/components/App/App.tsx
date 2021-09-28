@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Route, Switch, Redirect, withRouter } from "react-router-dom";
-import { setToLocalStorages, getFromLocalStorages } from "../../utils";
-import { RouteChildrenProps, RouteComponentProps } from "react-router";
+import { Route, Switch, Redirect } from "react-router-dom";
+import { RouteChildrenProps } from "react-router";
 import { OAuth } from "../OAuth";
 import { ProtectedRoute } from "../ProtectedRoute";
 
@@ -9,29 +8,22 @@ import { AppRoute, routes, ROUTES_URLS } from "./Routes";
 import { Header } from "../Header";
 
 import styles from "./app.module.scss";
-import { init } from "../../store/initialization";
-import { connect } from "react-redux";
+import { inject } from "mobx-react";
+import { STORE_IDS } from "../../observableStores";
+import { UiStore } from "../../observableStores/UiStore";
+import { observer } from "mobx-react";
+import { Board } from "../../types";
 
-const TOKEN_STORAGE_KEY = "TOKEN";
-const { REACT_APP_API_KEY } = process.env;
-interface Board {
-  id: string;
-  name: string;
-  pinned: boolean;
-  desc?: string;
-}
-
-interface AppState {
-  token: string;
-  boards: Array<Board>;
-  userProfile: any;
-}
+interface AppState {}
 
 const INITIAL_STATE = { token: "", userProfile: undefined, boards: [] };
-const emptyToken = "";
 
-interface AppProps {}
+interface AppProps {
+  [STORE_IDS.UI]?: UiStore;
+}
 
+@inject(STORE_IDS.UI)
+@observer
 class App extends React.Component<AppProps, AppState> {
   public state = INITIAL_STATE;
 
