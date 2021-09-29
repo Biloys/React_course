@@ -13,6 +13,7 @@ import { STORE_IDS } from "../../observableStores";
 import { UiStore } from "../../observableStores/UiStore";
 import { observer } from "mobx-react";
 import { Board } from "../../types";
+import { Notifications } from "../Notifications";
 
 interface AppState {}
 
@@ -61,6 +62,7 @@ class App extends React.Component<AppProps, AppState> {
     return (
       <div>
         <Header logOut={() => console.log("log-out")} />
+        <Notifications />
         {this.renderContent()}
       </div>
     );

@@ -24,7 +24,7 @@ export class BoardsStore {
       const list = await this._api.fetch(token);
       this._list = list;
     } catch (e) {
-      this._notifications.show();
+      this._notifications.show("Something went wrong");
     }
   }
 }
