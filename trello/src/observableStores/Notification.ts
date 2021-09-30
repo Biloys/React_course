@@ -1,9 +1,10 @@
-import { observable } from "mobx";
-import { stringify } from "querystring";
+import { makeAutoObservable } from "mobx";
 
 export class NotificationsStore {
-  @observable _notifications: Array<{ message: string; id: string }> = [];
-
+  _notifications: Array<{ message: string; id: string }> = [];
+  constructor() {
+    makeAutoObservable(this);
+  }
   get notifications() {
     return this._notifications;
   }

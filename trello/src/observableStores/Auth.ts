@@ -1,12 +1,13 @@
-import { observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { APP_TOKEN } from "../constants";
 import { getFromLocalStorages } from "../utils";
 
 export class AuthStore {
-  @observable token: any = "";
+  token: any = "";
 
   constructor() {
     this.readToken();
+    makeAutoObservable(this);
   }
 
   private readToken() {

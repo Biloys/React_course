@@ -1,4 +1,4 @@
-import { computed, observable } from "mobx";
+import { computed, makeAutoObservable, observable } from "mobx";
 
 interface ScreenDimansions {
   w: number;
@@ -6,14 +6,13 @@ interface ScreenDimansions {
 }
 
 export class UiStore {
-  @observable
   private _isModalOpen: boolean = false;
 
-  @observable
   private _screenDemansions: ScreenDimansions = { w: 0, h: 0 };
 
   constructor() {
     this.subscribeToScreenResize();
+    makeAutoObservable(this);
   }
   @computed
   public get isModalOpen() {

@@ -1,4 +1,5 @@
 import { BoardsApi } from "../apis/BoardsApi";
+import { Counter } from "./Counter";
 import { AuthStore } from "./Auth";
 import { BoardsStore } from "./Boards";
 import { MyCoolStore } from "./MyCoolStore";
@@ -11,6 +12,7 @@ export enum STORE_IDS {
   AUTH = "auth",
   BOARDS = "boards",
   NOTIFICATION = "notifications",
+  COUNTER = "counter",
 }
 
 const apis = {
@@ -30,6 +32,7 @@ const stores = {
     apis[STORE_IDS.BOARDS],
     notifications
   ),
+  [STORE_IDS.COUNTER]: new Counter(),
 };
 
 export { stores };

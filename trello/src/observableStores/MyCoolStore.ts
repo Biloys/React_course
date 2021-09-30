@@ -1,14 +1,15 @@
-import { action, computed, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 class MyCoolStore {
-  @observable private _value: number = 0;
+  private _value: number = 0;
 
-  @action
+  constructor() {
+    makeAutoObservable(this);
+  }
   public increase = () => {
     this._value = this._value + 1;
   };
 
-  @computed
   public get value() {
     return this._value;
   }
