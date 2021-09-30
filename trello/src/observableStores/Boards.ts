@@ -1,5 +1,4 @@
-import { observable } from "mobx";
-import { textChangeRangeIsUnchanged } from "typescript";
+import { makeAutoObservable, observable } from "mobx";
 import { BoardsApi } from "../apis/BoardsApi";
 import { BoardsCollection } from "../types";
 import { AuthStore } from "./Auth";
@@ -12,7 +11,9 @@ export class BoardsStore {
     private _auth: AuthStore,
     private _api: BoardsApi,
     private _notifications: NotificationsStore
-  ) {}
+  ) {
+    makeAutoObservable(this);
+  }
 
   public get list() {
     return this._list;
